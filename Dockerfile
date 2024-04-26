@@ -1,9 +1,9 @@
 FROM scratch
-COPY --from=qemux/qemu-docker:4.25 / /
+COPY --from=qemux/qemu-docker:4.25 /
 
-ARG DEBCONF_NOWARNINGS "yes"
-ARG DEBIAN_FRONTEND "noninteractive"
-ARG DEBCONF_NONINTERACTIVE_SEEN "true"
+ARG DEBCONF_NOWARNINGS="yes"
+ARG DEBIAN_FRONTEND="noninteractive"
+ARG DEBCONF_NONINTERACTIVE_SEEN="true"
 
 RUN apt-get update && \
     apt-get --no-install-recommends -y install \
@@ -34,12 +34,12 @@ RUN chmod +x /run/*.sh && chmod +x /usr/sbin/wsdd
 EXPOSE 8006 3389
 VOLUME /storage
 
-ENV RAM_SIZE "4G"
-ENV CPU_CORES "2"
-ENV DISK_SIZE "64G"
-ENV VERSION "win11"
+ENV RAM_SIZE="24G"
+ENV CPU_CORES="6"
+ENV DISK_SIZE="64G"
+ENV VERSION="win11"
 
-ARG VERSION_ARG "0.0"
+ARG VERSION_ARG="0.0"
 RUN echo "$VERSION_ARG" > /run/version
 
-ENTRYPOINT ["/usr/bin/tini", "-s", "/run/entry.sh"]
+ENTRYPOINT ["docker", "run", "--device", "/dev/net/tun", "--cap-add", "NET_ADMIN", "/usr/bin/tini", "-s", "/run/entry.sh"]
