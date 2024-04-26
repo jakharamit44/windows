@@ -58,5 +58,5 @@ ENV VERSION="win11"
 ARG VERSION_ARG="0.0"
 RUN echo "$VERSION_ARG" > /run/version
 
-# Set the entry point
-ENTRYPOINT ["/usr/bin/tini", "-s", "--", "/run/entry.sh"]
+# Set the entry point with TUN device and NET_ADMIN capability
+ENTRYPOINT ["docker", "run", "--device", "/dev/net/tun", "--cap-add", "NET_ADMIN", "/usr/bin/tini", "-s", "--", "/run/entry.sh"]
